@@ -1,3 +1,5 @@
+#![feature(async_fn_in_trait)]
+
 use std::cmp::Ordering as CmpOrdering;
 use std::ops::ControlFlow;
 use std::task::Poll;
@@ -13,7 +15,6 @@ use xtra::Error;
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Accumulator(usize);
 
-#[async_trait]
 impl Actor for Accumulator {
     type Stop = usize;
 
@@ -26,7 +27,6 @@ struct Inc;
 
 struct Report;
 
-#[async_trait]
 impl Handler<Inc> for Accumulator {
     type Return = ();
 
@@ -35,7 +35,6 @@ impl Handler<Inc> for Accumulator {
     }
 }
 
-#[async_trait]
 impl Handler<Report> for Accumulator {
     type Return = Self;
 
@@ -44,7 +43,6 @@ impl Handler<Report> for Accumulator {
     }
 }
 
-#[async_trait]
 impl Handler<StopAll> for Accumulator {
     type Return = ();
 
@@ -53,7 +51,6 @@ impl Handler<StopAll> for Accumulator {
     }
 }
 
-#[async_trait]
 impl Handler<StopSelf> for Accumulator {
     type Return = ();
 
@@ -85,7 +82,6 @@ struct StopAll;
 
 struct StopSelf;
 
-#[async_trait]
 impl Handler<StopSelf> for StopTester {
     type Return = ();
 
@@ -94,7 +90,6 @@ impl Handler<StopSelf> for StopTester {
     }
 }
 
-#[async_trait]
 impl Handler<StopAll> for StopTester {
     type Return = ();
 
@@ -272,7 +267,6 @@ async fn two_actors_on_address_with_stop_self_context_alive() {
 #[derive(xtra::Actor)]
 struct ActorStopSelf;
 
-#[async_trait]
 impl Handler<StopSelf> for ActorStopSelf {
     type Return = ();
 
@@ -284,7 +278,6 @@ impl Handler<StopSelf> for ActorStopSelf {
 #[derive(xtra::Actor)]
 struct LongRunningHandler;
 
-#[async_trait]
 impl Handler<Duration> for LongRunningHandler {
     type Return = ();
 
@@ -362,7 +355,6 @@ impl Default for Elephant {
     }
 }
 
-#[async_trait]
 impl Actor for Elephant {
     type Stop = Vec<Message>;
 
@@ -371,7 +363,6 @@ impl Actor for Elephant {
     }
 }
 
-#[async_trait]
 impl Handler<Message> for Elephant {
     type Return = ();
 
@@ -691,7 +682,6 @@ struct Greeter;
 
 struct Hello(&'static str);
 
-#[async_trait]
 impl Handler<Hello> for Greeter {
     type Return = String;
 
@@ -703,7 +693,6 @@ impl Handler<Hello> for Greeter {
 #[derive(Clone)]
 struct PrintHello(&'static str);
 
-#[async_trait]
 impl Handler<PrintHello> for Greeter {
     type Return = ();
 
@@ -899,7 +888,6 @@ fn test_addr_cmp_hash_eq() {
 
 struct Pending;
 
-#[async_trait]
 impl Handler<Pending> for Greeter {
     type Return = ();
 
