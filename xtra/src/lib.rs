@@ -2,7 +2,6 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![deny(unsafe_code, missing_docs)]
-#![feature(return_position_impl_trait_in_trait, async_fn_in_trait)]
 
 use std::fmt;
 use std::future::Future;
